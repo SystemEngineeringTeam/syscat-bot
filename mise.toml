@@ -1,0 +1,16 @@
+[tools]
+bun = "1.3"
+
+[tasks.setup]
+run = [
+  "cp ./.vscode/settings.example.json ./.vscode/settings.json",
+  "mise i",
+  "bun i",
+]
+
+[tasks.dev]
+run = """
+bun run dev:https &
+bun run tunnel &
+wait
+"""

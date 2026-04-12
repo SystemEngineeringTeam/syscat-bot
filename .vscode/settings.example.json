@@ -1,0 +1,31 @@
+{
+  "files.associations": {
+    "wrangler.json": "jsonc"
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.*.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "bun.lock",
+    ".dev.vars": ".dev.vars.*"
+  },
+  "eslint.useFlatConfig": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+	"json.schemas": [
+		{
+			"fileMatch": ["slack-manifest.json"],
+			"url": "https://raw.githubusercontent.com/slackapi/manifest-schema/main/manifest.schema.json"
+		}
+	]
+}

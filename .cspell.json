@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "ignorePaths": [
+    "package.json",
+    "worker-configuration.d.ts",
+    "openapi.json",
+  ],
+  "words": [
+    "meibo",
+    "uuidv4",
+    "commer",
+    "newcommer",
+    "continuting",
+    "ofetch",
+    "prefcode",
+  ]
+}

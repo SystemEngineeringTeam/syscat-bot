@@ -1,0 +1,56 @@
+{
+  "_metadata": {
+    "major_version": 1,
+    "minor_version": 0
+  },
+  "display_information": {
+    "name": "シスにゃんBOT"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "syscat",
+      "always_online": true
+    },
+    "slash_commands": [
+      {
+        "command": "/set-notify-channel",
+        "description": "通知チャンネルに設定",
+        "url": "https://sheer-pottery-steve-anna.trycloudflare.com"
+      }
+    ],
+    "app_home": {
+      "messages_tab_enabled": true,
+      "messages_tab_read_only_enabled": false
+    }
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "app_mentions:read",
+        "chat:write",
+        "chat:write.public",
+        "commands",
+        "users:read",
+        "channels:read",
+        "im:write",
+        "im:history",
+        "reactions:read",
+        "reactions:write",
+        "emoji:read"
+      ]
+    }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "request_url": "https://sheer-pottery-steve-anna.trycloudflare.com",
+      "bot_events": [
+        "message.im",
+        "channel_created"
+      ]
+    },
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://sheer-pottery-steve-anna.trycloudflare.com"
+    }
+  }
+}
