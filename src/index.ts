@@ -43,16 +43,22 @@ export default {
 
       const matches = Array.from(after.matchAll(STAMP_REGEX));
       const stamps = matches.map((m) => m[1]);
+      const targetTs = payload.thread_ts ?? payload.ts;
 
       if (stamps.length === 0) {
-        await context.client.chat.postMessage({
-          channel: payload.channel,
-          text: action === 'remove' ? `<@${payload.user}> 削除するスタンプを指定してください。` : `<@${payload.user}> スタンプを指定してください。`,
-        });
+        if (payload.user) {
+          await context.client.chat.postEphemeral({
+            channel: payload.channel,
+            user: payload.user,
+            thread_ts: targetTs,
+            text: `@シスにゃんBOT stamp [スタンプ名] or @シスにゃんBOT stamp remove [スタンプ名] でスタンプを追加・削除できます！
+  例: @シスにゃんBOT stamp :penguin: :tada:
+  例: @シスにゃんBOT stamp remove :penguin: :tada:`,
+          });
+        }
         return;
       }
 
-      const targetTs = payload.thread_ts ?? payload.ts;
       for (const stamp of stamps.slice(0, 20)) {
         try {
           if (action === 'remove') {
