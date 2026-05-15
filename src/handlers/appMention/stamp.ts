@@ -1,12 +1,9 @@
 import type { EventLazyHandler } from 'slack-cloudflare-workers';
 import type { SlackAppEnv } from '@/types';
+import { SPACE_REGEX, STAMP_REGEX } from '@/consts/regix';
 
-const SPACE_REGEX = /\s+/;
-const STAMP_REGEX = /:([^:\s]+):/g;
-
-export const appMentionHandler: EventLazyHandler<'app_mention', SlackAppEnv> = async ({ context, payload }) => {
+export const appMentionStampCommandHandler: EventLazyHandler<'app_mention', SlackAppEnv> = async ({ context, payload }) => {
   const parts = payload.text.split(SPACE_REGEX).slice(1); // after mention
-  if (parts[0] !== 'stamp') return;
 
   const action = parts[1] === 'remove' ? 'remove' : 'add';
   const after = action === 'remove' ? parts.slice(2).join(' ') : parts.slice(1).join(' ');
