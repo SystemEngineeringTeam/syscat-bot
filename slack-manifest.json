@@ -45,7 +45,8 @@
       "request_url": "https://sheer-pottery-steve-anna.trycloudflare.com",
       "bot_events": [
         "message.im",
-        "channel_created"
+        "channel_created",
+        "app_mention"
       ]
     },
     "interactivity": {
