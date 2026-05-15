@@ -1,14 +1,12 @@
 import type { EventLazyHandler } from 'slack-cloudflare-workers';
 import type { SlackAppEnv } from '@/types';
+import { SPACE_REGEX } from '@/consts/regix';
 import { askSyscatAi } from '@/lib/syscat_ai';
 
-export const messageHandler: EventLazyHandler<'message', SlackAppEnv> = async ({ context, payload, env }) => {
-  if (payload.subtype === 'bot_message') return;
-  if (!('text' in payload)) return;
-
-  const message = payload.text;
+export const appMentionAiResponseHandler: EventLazyHandler<'app_mention', SlackAppEnv> = async ({ context, payload, env }) => {
   const slackUserId = payload.user;
-  const threadTimestamp = 'thread_ts' in payload && payload.thread_ts ? payload.thread_ts : undefined;
+  const message = payload.text.split(SPACE_REGEX).slice(1).join(' ');
+  const threadTimestamp = payload.thread_ts;
 
   await askSyscatAi(message, slackUserId, {
     client: context.client,

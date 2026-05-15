@@ -1,6 +1,7 @@
 import type { EventLazyHandler } from 'slack-cloudflare-workers';
 import type { SlackAppEnv } from '@/types';
 import { SPACE_REGEX } from '@/consts/regix';
+import { appMentionAiResponseHandler } from './ai';
 import { appMentionStampCommandHandler } from './stamp';
 
 export const appMentionHandler: EventLazyHandler<'app_mention', SlackAppEnv> = async ({ payload, ...rest }) => {
@@ -13,12 +14,6 @@ export const appMentionHandler: EventLazyHandler<'app_mention', SlackAppEnv> = a
       return;
     }
     default:
-      if (payload.user) {
-        await rest.context.client.chat.postEphemeral({
-          user: payload.user,
-          channel: payload.channel,
-          text: `やあ！`,
-        });
-      }
+      await appMentionAiResponseHandler({ payload, ...rest });
   }
 };
