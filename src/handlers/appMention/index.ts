@@ -4,16 +4,25 @@ import { SPACE_REGEX } from '@/consts/regix';
 import { appMentionAiResponseHandler } from './ai';
 import { appMentionStampCommandHandler } from './stamp';
 
-export const appMentionHandler: EventLazyHandler<'app_mention', SlackAppEnv> = async ({ payload, ...rest }) => {
-  const command = payload.text.split(SPACE_REGEX).slice(1).at(0);
-  if (!command) return;
+export const appMentionHandler: EventLazyHandler<'app_mention', SlackAppEnv> = async ({ payload, context, ...rest }) => {
+  const parts = payload.text.split(SPACE_REGEX);
+
+  // メンション部分以降の最初の単語をコマンドとして扱う
+  const mentionedText = `<@${context.botUserId}>`;
+  const mentionedIndex = parts.findIndex((part) => part.trim() === mentionedText);
+  const command = parts.at(mentionedIndex + 1)?.toLowerCase();
+
+  if (command === undefined) {
+    await appMentionAiResponseHandler({ payload, context, ...rest }); // AI 応答
+    return;
+  }
 
   switch (command) {
     case 'stamp': {
-      await appMentionStampCommandHandler({ payload, ...rest });
+      await appMentionStampCommandHandler({ payload, context, ...rest });
       return;
     }
     default:
-      await appMentionAiResponseHandler({ payload, ...rest });
-  }
+      await appMentionAiResponseHandler({ payload, context, ...rest }); // AI 応答
+  };
 };
