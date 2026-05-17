@@ -9,10 +9,10 @@ export const appMentionStampCommandHandler: EventLazyHandler<'app_mention', Slac
   const after = action === 'remove' ? parts.slice(2).join(' ') : parts.slice(1).join(' ');
 
   const matches = Array.from(after.matchAll(STAMP_REGEX));
-  const stamps = matches.map((m) => m[1]);
+  const stamps = new Set(matches.map((m) => m[1]));
   const targetTs = payload.thread_ts ?? payload.ts;
 
-  if (stamps.length === 0) {
+  if (stamps.size === 0) {
     if (payload.user) {
       await context.client.chat.postEphemeral({
         channel: payload.channel,
@@ -24,7 +24,7 @@ export const appMentionStampCommandHandler: EventLazyHandler<'app_mention', Slac
     return;
   }
 
-  for (const stamp of stamps.slice(0, 20)) {
+  for (const stamp of stamps) {
     try {
       if (action === 'remove') {
         await context.client.reactions.remove({
@@ -42,14 +42,5 @@ export const appMentionStampCommandHandler: EventLazyHandler<'app_mention', Slac
     } catch (err) {
       console.warn(`reactions.${action} failed`, stamp, err);
     }
-  }
-
-  if (payload.user) {
-    await context.client.chat.postEphemeral({
-      channel: payload.channel,
-      user: payload.user,
-      thread_ts: targetTs,
-      text: `<@${payload.user}> スタンプを${action === 'remove' ? '削除' : '追加'}しました！${stamps.map((s) => ` :${s}: `).join('')}`,
-    });
   }
 };
