@@ -17,9 +17,11 @@ export const appMentionHandler: EventLazyHandler<'app_mention', SlackAppEnv> = a
     return;
   }
 
+  const commandParams = parts.slice(mentionedIndex + 1);
+
   switch (command) {
     case 'stamp': {
-      await appMentionStampCommandHandler({ payload, context, ...rest });
+      await appMentionStampCommandHandler(commandParams)({ payload, context, ...rest });
       return;
     }
     default:
