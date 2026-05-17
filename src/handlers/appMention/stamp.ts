@@ -9,10 +9,10 @@ export const appMentionStampCommandHandler: EventLazyHandler<'app_mention', Slac
   const after = action === 'remove' ? parts.slice(2).join(' ') : parts.slice(1).join(' ');
 
   const matches = Array.from(after.matchAll(STAMP_REGEX));
-  const stamps = new Set(matches.map((m) => m[1]));
+  const stamps = matches.map((m) => m[1]).filter((v, i, a) => a.indexOf(v) === i);
   const targetTs = payload.thread_ts ?? payload.ts;
 
-  if (stamps.size === 0) {
+  if (stamps.length === 0) {
     if (payload.user) {
       await context.client.chat.postEphemeral({
         channel: payload.channel,
