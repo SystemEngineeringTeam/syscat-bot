@@ -1,6 +1,7 @@
 import type { EventLazyHandler } from 'slack-cloudflare-workers';
 import type { SlackAppEnv } from '@/types';
 import { STAMP_REGEX } from '@/consts/regix';
+import { sleepMs } from '@/utils/sleep';
 
 export const appMentionStampCommandHandler = (commandPrams: string[]): EventLazyHandler<'app_mention', SlackAppEnv> => async ({ context, payload }) => {
   const action = commandPrams[1] === 'remove' ? 'remove' : 'add';
@@ -39,6 +40,8 @@ export const appMentionStampCommandHandler = (commandPrams: string[]): EventLazy
       }
     } catch (err) {
       console.warn(`reactions.${action} failed`, stamp, err);
+    } finally {
+      await sleepMs(100);
     }
   }
 };
