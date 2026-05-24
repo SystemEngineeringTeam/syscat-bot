@@ -11,6 +11,6 @@ export const channelCreated: EventLazyHandler<'channel_created', SlackAppEnv> = 
 
   await context.client.chat.postMessage({
     channel: notifyChannelId!,
-    text: `チャンネル「${payload.channel.name}」が作成されました！`,
+    text: `チャンネル「${payload.channel.name}」が作成されました！\n<#${payload.channel.id}>`,
   });
 };
